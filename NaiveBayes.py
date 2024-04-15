@@ -1,12 +1,11 @@
 import pandas as pd
-import numpy as np
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.model_selection import train_test_split
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.metrics import accuracy_score, classification_report
 
 # Read the data from the CSV file
-data = pd.read_csv("multilanguageemail.csv")
+data = pd.read_csv("translatedTextGerman.csv")
 
 # Extract features (X) and labels (y)
 X = data['text']
@@ -36,7 +35,7 @@ print("Classification Report for English emails:")
 print(classification_report(y_test, y_pred))
 
 # Extract German text (text_de)
-X_de = data['text_de']
+X_de = data['translated_de']
 
 # Transform German text using the same CountVectorizer
 X_de_counts = vectorizer.transform(X_de)
