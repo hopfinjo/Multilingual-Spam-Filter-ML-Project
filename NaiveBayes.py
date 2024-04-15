@@ -6,6 +6,7 @@ from sklearn.metrics import accuracy_score, classification_report
 
 # Read the data from the CSV file
 data = pd.read_csv("translatedTextGerman.csv")
+print("Here")
 
 # Extract features (X) and labels (y)
 X = data['text']
