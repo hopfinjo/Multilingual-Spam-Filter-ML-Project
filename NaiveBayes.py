@@ -6,14 +6,13 @@ from sklearn.metrics import accuracy_score, classification_report
 
 # Read the data from the CSV file
 data = pd.read_csv("translatedTextGerman.csv")
-print("Here")
 
 # Extract features (X) and labels (y)
-X = data['text']
+X = data['text_en']
 y = data['labels']
 
 # Split the data into training and testing sets for English emails
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.5, random_state=42)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.7, random_state=42)
 
 # Create a CountVectorizer to convert text into a matrix of token counts for English emails
 vectorizer = CountVectorizer()
