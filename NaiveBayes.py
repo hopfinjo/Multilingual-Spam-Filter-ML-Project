@@ -2,54 +2,47 @@ import pandas as pd
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.model_selection import train_test_split
 from sklearn.naive_bayes import MultinomialNB
-from sklearn.metrics import accuracy_score, classification_report
+from sklearn.metrics import accuracy_score
 
 # Read the data from the CSV file
 data = pd.read_csv("translatedTextGerman.csv")
 
-# Extract features (X) and labels (y)
-X = data['text_en']
-y = data['labels']
+# Separate English and German data
+english_data = data[data['text_en'].notna()]
+german_data = data[data['translated_de'].notna()]
 
-# Split the data into training and testing sets for English emails
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.7, random_state=42)
+# Extract features (X) and labels (y) for English emails
+X_en = english_data['text_en']
+y_en = english_data['labels']
+
+# Split the English data into training and testing sets
+X_train_en, X_test_en, y_train_en, y_test_en = train_test_split(X_en, y_en, test_size=0.1, random_state=42)
 
 # Create a CountVectorizer to convert text into a matrix of token counts for English emails
-vectorizer = CountVectorizer()
-X_train_counts = vectorizer.fit_transform(X_train)
-X_test_counts = vectorizer.transform(X_test)
+vectorizer_en = CountVectorizer()
+X_train_counts_en = vectorizer_en.fit_transform(X_train_en)
+X_test_counts_en = vectorizer_en.transform(X_test_en)
 
 # Train a Multinomial Naive Bayes classifier for English emails
-clf = MultinomialNB()
-clf.fit(X_train_counts, y_train)
-
-# Predict on the testing set for English emails
-y_pred = clf.predict(X_test_counts)
+clf_en = MultinomialNB()
+clf_en.fit(X_train_counts_en, y_train_en)
 
 # Calculate accuracy for English emails
-accuracy = accuracy_score(y_test, y_pred)
-print("Accuracy on English emails:", accuracy)
+accuracy_en_train = accuracy_score(y_train_en, clf_en.predict(X_train_counts_en))
+accuracy_en_test = accuracy_score(y_test_en, clf_en.predict(X_test_counts_en))
+print("Accuracy on English training data:", accuracy_en_train)
+print("Accuracy on English testing data:", accuracy_en_test)
 
-# Print classification report for English emails
-print("Classification Report for English emails:")
-print(classification_report(y_test, y_pred))
+# Extract features (X) and labels (y) for German emails
+X_de = german_data['translated_de']
+y_de = german_data['labels']
 
-# Extract German text (text_de)
-X_de = data['translated_de']
+# Transform German text using the CountVectorizer trained on English data
+X_de_counts = vectorizer_en.transform(X_de)
 
-# Transform German text using the same CountVectorizer
-X_de_counts = vectorizer.transform(X_de)
-
-# Predict labels using the trained classifier for German emails
-y_pred_de = clf.predict(X_de_counts)
-
-# Extract true labels for the German emails
-y_true_de = data['labels']
+# Predict labels using the trained English classifier for German emails
+y_pred_de = clf_en.predict(X_de_counts)
 
 # Calculate accuracy for German emails
-accuracy_de = accuracy_score(y_true_de, y_pred_de)
-print("Accuracy on German emails:", accuracy_de)
-
-# Print classification report for German emails
-print("Classification Report for German emails:")
-print(classification_report(y_true_de, y_pred_de))
+accuracy_de = accuracy_score(y_de, y_pred_de)
+print("Accuracy on German emails using English classifier:", accuracy_de)
