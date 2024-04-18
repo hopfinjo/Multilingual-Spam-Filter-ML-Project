@@ -59,13 +59,13 @@ X_fr = french_data['text_fr']
 labels_fr = french_data['labels']
 
 # Split the English data into training and testing sets
-X_train_en, X_test_en, y_train_en, y_test_en = train_test_split(X_en, labels_en, test_size=0.4, random_state=42)
+X_train_en, X_test_en, y_train_en, y_test_en = train_test_split(X_en, labels_en, test_size=0.4, random_state=44)
 
 # Split the German data into training and testing sets
-X_train_de, X_test_de, y_train_de, y_test_de = train_test_split(X_de, labels_de, test_size=0.4, random_state=42)
+X_train_de, X_test_de, y_train_de, y_test_de = train_test_split(X_de, labels_de, test_size=0.4, random_state=44)
 
 # Split the French data into training and testing sets
-X_train_fr, X_test_fr, y_train_fr, y_test_fr = train_test_split(X_fr, labels_fr, test_size=0.4, random_state=42)
+X_train_fr, X_test_fr, y_train_fr, y_test_fr = train_test_split(X_fr, labels_fr, test_size=0.4, random_state=44)
 
 
 # Create a CountVectorizer to convert text into a matrix of token counts for English emails
@@ -99,20 +99,20 @@ clf_fr.fit(X_train_counts_fr, y_train_fr)
 # ---------------------------------------------------------------------------------------
 
 # Retrieve the log probabilities of features given each class
-feature_log_probs_en = clf_de.feature_log_prob_
+feature_log_probs_fr = clf_fr.feature_log_prob_
 
 # The shape of feature_log_probs_en will be (n_classes, n_features),
 # where n_classes is the number of target classes and n_features is the number of features
 
 # If you want to associate each log probability with its corresponding feature,
 # you can use the vocabulary provided by the CountVectorizer
-feature_names_de = vectorizer_de.get_feature_names_out()
+feature_names_fr = vectorizer_fr.get_feature_names_out()
 
 # Create a DataFrame to associate feature names with their log probabilities for each class
-feature_importance_df_en = pd.DataFrame(feature_log_probs_en, columns=feature_names_de)
+feature_importance_df_en = pd.DataFrame(feature_log_probs_fr, columns=feature_names_fr)
 
 
-feature_probability_df = pd.DataFrame(feature_log_probs_en, index=['Class 0', 'Class 1'], columns=feature_names_de)
+feature_probability_df = pd.DataFrame(feature_log_probs_fr, index=['Class 0', 'Class 1'], columns=feature_names_fr)
 
 # Transpose the DataFrame to have words as column headers
 feature_probability_df_transposed = feature_probability_df.transpose()
