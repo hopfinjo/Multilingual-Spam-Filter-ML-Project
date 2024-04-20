@@ -13,10 +13,10 @@ X = vectorizer.fit_transform(df['text'])
 y = df['labels']
 
 # Split the dataset into training and testing sets
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.4, random_state=42)
 
 # Train the KNN classifier
-k = 1  # number of neighbors
+k = 2  # number of neighbors
 knn_classifier = KNeighborsClassifier(n_neighbors=k)
 knn_classifier.fit(X_train, y_train)
 
