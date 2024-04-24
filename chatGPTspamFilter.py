@@ -3,7 +3,7 @@ from openai import OpenAI
 import os
 
 def classify_email(text):
-    os.environ["OPENAI_API_KEY"] = "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"
+    os.environ["OPENAI_API_KEY"] = "ENTERYOURPWHERE"
 
     client = OpenAI()
 
